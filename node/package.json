@@ -1,0 +1,21 @@
+{
+  "name": "hello-world",
+  "version": "1.0.0",
+  "description": "A simple hello-word demo of node express",
+  "main": "hello-world.js",
+  "scripts": {
+    "test": "echo 0"
+  },
+  "keywords": [
+    "demo",
+    "node",
+    "express",
+    "hello-world"
+  ],
+  "author": "Theodor",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "express": "^4.17.1"
+  }
+}
