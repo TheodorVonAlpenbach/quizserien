@@ -5,8 +5,10 @@ const morgan = require('morgan')
 const path = require('path')
 const fs = require('fs')
 const fetch = require('node-fetch');
+const dotenv = require('dotenv');
 
-const app = express()
+dotenv.config();
+var app = express();
 
 app.use(morgan('tiny'))
 app.use(express.static(path.join(__dirname, 'public')))
@@ -15,7 +17,7 @@ app.use('/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/
 app.use('/js', express.static(path.join(__dirname, 'node_modules/jquery/dist')))
 app.use('/js', express.static(path.join(__dirname, 'public/js')))
 
-var port = 3001
+const port = process.env.PORT
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'index.html'))
@@ -42,7 +44,7 @@ app.get('/pubdata', (req, res) => {
 })
 
 app.get('/testget', (req, res) => {
-    fetch('http://localhost:3001/pubdata')
+    fetch('http://localhost:/pubdata')
         .then(jsonString => jsonString.json())
         .then(json => res.send(json));
 })
@@ -61,5 +63,5 @@ app.get('/rest/:id', (req, res) => {
 })
 
 app.listen(port, () => {
-    debug(`Example app listening at localhost on port ` + chalk.green(3000))
+    debug(`Example app listening at localhost on port ` + chalk.green(port))
 })
