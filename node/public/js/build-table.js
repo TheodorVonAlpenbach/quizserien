@@ -1,7 +1,7 @@
 let tableData;
 
 const getData = async function() {
-    const res = await fetch(location.href + '/pubdata');
+    const res = await fetch(location.href + 'pubdata');
     tableData = await res.json();
     return tableData;
 }
