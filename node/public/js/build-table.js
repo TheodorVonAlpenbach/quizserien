@@ -1,14 +1,15 @@
-const data = [
-    { Lag: "Monte Falco", Poeng: [1, 2, 123] },
-    { Lag: "Monte Falterona", Poeng: [1654, 123, 123] },
-    { Lag: "Poggio Scali", Poeng: [1520, 34, 123] },
-    { Lag: "Pratomagno", Poeng: [1592, 34, 123] },
-    { Lag: "Monte Amiata", Poeng: [1738, 34, 123] }
-];
+let tableData;
+
+const getData = async function() {
+    const res = await fetch('http://localhost:3001/pubdata');
+    tableData = await res.json();
+    return tableData;
+}
 
 function range(size, startAt = 0) {
     return [...Array(size).keys()].map(i => i + startAt);
 }
+
 function generateTableHead(table, columnHeaders) {
     let thead = table.createTHead();
     let row = thead.insertRow();
@@ -20,27 +21,63 @@ function generateTableHead(table, columnHeaders) {
     }
 }
 
-function generateMultipleRounds(table, data) {
-    if (!data.length) {
+const reducer = (accumulator, curr) => accumulator + curr;
+
+function generateMultipleRounds(table, data, pubName) {
+    if (!data) {
         return;
     }
 
     const firstRow = data[0];
-    const rounds = range(firstRow["Poeng"].length, 1);
-    const cols = rounds.unshift("Lag");
-    generateTableHead(table, rounds);
-    
-    for (let pub of data) {
-        const row = table.insertRow();
-        row.insertCell().appendChild(document.createTextNode(pub["Lag"]));
-        const points = pub["Poeng"];
+    const pubs = data["pubs"];
+    const pub = pubs[pubName];
+
+    const totalRounds = data["config"]["Runder totalt"];
+    const countingRounds = data["config"]["Runder tellende"];
+    let cols = range(totalRounds, 1);
+    cols.unshift("Lag");
+    cols.push("Total", "Tellende");
+
+    const pubHeader = document.querySelector(".pubHeader");
+    pubHeader.innerText = "Resultater " + pubName;
+    console.log(pubHeader)
+    generateTableHead(table, cols);
+
+    let tbody = document.getElementsByTagName("tbody")[0];
+    if (tbody)
+        tbody.remove();
+    tbody = table.createTBody();
+
+    for (let team in pub) {
+        const row = tbody.insertRow();
+        row.insertCell().appendChild(document.createTextNode(team));
+        const points = pub[team];
         for (let round in points) {
             row.insertCell().appendChild(document.createTextNode(points[round]));
         }
+        const sum = points.reduce(reducer);
+        row.insertCell().appendChild(document.createTextNode(sum));
+        const sumCounting = points.sort().slice(totalRounds - countingRounds).reduce(reducer);
+        row.insertCell().appendChild(document.createTextNode(sumCounting));
     }
 }
 
-const singleRoundTable = document.querySelector(".singleRound");
-generateSingleRound(singleRoundTable, data, 1);
-const multipleRoundsTable = document.querySelector(".multipleRounds");
-generateMultipleRounds(multipleRoundsTable, data);
+function generate1(data) {
+    const singleRoundTable = document.querySelector(".singleRound");
+    // generateSingleRound(singleRoundTable, data, 1);
+    const multipleRoundsTable = document.querySelector(".multipleRounds");
+    let pubName = "Fru Burums";
+    pubName = "Dirty Nelly";
+    generateMultipleRounds(multipleRoundsTable, data, pubName);
+}
+
+function generate() {
+    if (!tableData) {
+        getData().then(x => generate1(x));
+    }
+    else {
+        generate1(tableData);
+    }
+}
+
+generate();

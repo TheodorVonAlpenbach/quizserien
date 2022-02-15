@@ -4,8 +4,7 @@ const debug = require('debug')('app')
 const morgan = require('morgan')
 const path = require('path')
 const fs = require('fs')
-
-import fetch from 'node-fetch';
+const fetch = require('node-fetch');
 
 const app = express()
 
@@ -14,6 +13,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use('/css', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')))
 app.use('/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')))
 app.use('/js', express.static(path.join(__dirname, 'node_modules/jquery/dist')))
+app.use('/js', express.static(path.join(__dirname, 'public/js')))
 
 var port = 3001
 
@@ -30,7 +30,7 @@ app.get('/rest', (req, res) => {
 })
 
 app.get('/pubdata', (req, res) => {
-    const filename = path.join(__dirname, '/public/js/data.json');
+    const filename = path.join(__dirname, '/../data/data.json');
     fs.readFile(filename, 'utf8', (err, jsonString) => {
         if (err) {
             console.log("File read failed:", err);
@@ -41,13 +41,19 @@ app.get('/pubdata', (req, res) => {
     })
 })
 
-app.get('/testget', (req, data) => {
-    fetch('/pubdata')
-        .then(data => res.send(data.json()))
-        .then(out =>
-              console.log('Checkout this JSON! ', out))
-        .catch(err => console.log(err));
+app.get('/testget', (req, res) => {
+    fetch('http://localhost:3001/pubdata')
+        .then(jsonString => jsonString.json())
+        .then(json => res.send(json));
 })
+
+// app.get('/testget', (req, res) => {
+//     const dataRaw = fetch('http://localhost:3001/pubdata');
+//     const data = dataRaw;
+//     const firstRow = data[0];
+//     debugger;
+//     res.send(firstRow["Poeng"]);
+// })
 
 
 app.get('/rest/:id', (req, res) => {

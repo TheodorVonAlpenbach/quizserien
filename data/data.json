@@ -1,0 +1,31 @@
+{
+  "config": {
+    "Runder totalt": 5,
+    "Runder tellende": 3
+  },
+  "pubs": {
+    "Fru Burums": {
+      "Skumle Pølser": [44, 43, 40, 20, 0],
+      "Men At Work": [0, 43, 41, 42, 0] 
+    },
+    "Onkel Oskar": {
+      "Cranium": [0, 44, 43, 40, 0],
+      "Fem-Null": [43, 41, 42, 39, 0] 
+    },
+    "Dirty Nelly": {
+      "Quizaholics": [51, 53, 0, 0, 0],
+      "Mimes bryggeri": [49, 48, 0, 0, 0],
+      "Teflonpannene": [48, 52, 0, 0, 0],
+      "Kamma believers": [47, 40, 0, 0, 0],
+      "Quizti Brud": [45, 0, 0, 0, 0],
+      "Sølvguttene": [43, 46, 0, 0, 0],
+      "Argonautene": [42, 40, 0, 0, 0],
+      "Barhjørnet QT": [38, 0, 0, 0, 0],
+      "Kattastrofe": [37, 46, 0, 0, 0],
+      "Quiztina Aguilera": [30, 27, 0, 0, 0],
+      "Alternativ Fest": [0, 46, 0, 0 ,0],
+      "Sandvika Bitch": [0, 29, 0, 0, 0],
+      "Quizleis": [0, 52, 0, 0, 0]
+    }
+  }
+}

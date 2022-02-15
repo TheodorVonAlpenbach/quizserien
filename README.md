@@ -1,5 +1,9 @@
 # quizserien
 Home site for quizserien
 
-Start the server
-> node hello-world.js
+1. Start the server
+$ cd ~/git/quizserien/node
+$ node hello-world.js
+
+2. Open
+http://localhost:3001
